@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
+    'http://localhost:5173',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +57,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# ALLOWED_HOSTS=['http://localhost:5173']
+# CORS_ORIGIN_ALLOW_ALL = False
+# CORS_ORIGIN_WHITELIST = (
+#        'http://localhost:5173',
+# )
 
 ROOT_URLCONF = 'studynet_django.urls'
 

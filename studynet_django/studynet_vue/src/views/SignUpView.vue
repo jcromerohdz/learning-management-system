@@ -1,13 +1,18 @@
 <script setup>
- import { ref } from "vue"
+  import { ref } from "vue"
+  import { useRoute, useRouter } from "vue-router"
+  import axios from 'axios'
+
 
   const username = ref('')
   const password = ref('')
   const password2 = ref('')
   const errors = ref([])
 
+  const router = useRouter();
+
+
   const submitForm = () => {
-    console.log(`${username.value}, ${password.value}, ${password2.value}`)
     errors.value = []
 
     if (username.value === ''){
@@ -18,6 +23,25 @@
     }
     if (password.value !== password2.value){
       errors.value.push('The passwords are not matching!')
+    }
+    if (!errors.value.length){
+      const formData = {
+        username: username.value,
+        password: password.value
+      }
+      const registerUser = async () => {
+        try {
+          const response = await axios.post('/api/v1/users/', formData)
+          if (response){
+            console.log(response)
+            router.push('/login')
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      registerUser()
     }
   }
 
