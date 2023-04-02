@@ -1,4 +1,26 @@
 <script setup>
+ import { ref } from "vue"
+
+  const username = ref('')
+  const password = ref('')
+  const password2 = ref('')
+  const errors = ref([])
+
+  const submitForm = () => {
+    console.log(`${username.value}, ${password.value}, ${password2.value}`)
+    errors.value = []
+
+    if (username.value === ''){
+      errors.value.push('The username is missing!')
+    }
+    if (password.value === ''){
+      errors.value.push('The password is missing!')
+    }
+    if (password.value !== password2.value){
+      errors.value.push('The passwords are not matching!')
+    }
+  }
+
 </script>
 
 <template>
@@ -14,24 +36,34 @@
       <div class="container">
         <div class="columns">
           <div class="column is-4 is-offset-4">
-            <form action="">
+            <form @submit.prevent="submitForm" action="">
               <div class="field">
                 <label for="email">Email</label>
                 <div class="control">
-                  <input type="email" class="input">
+                  <input type="email" class="input" v-model="username">
                 </div>
               </div>
               <div class="field">
                 <label for="password">Password</label>
                 <div class="control">
-                  <input type="password" class="input">
+                  <input type="password" class="input" v-model="password">
                 </div>
               </div>
               <div class="field">
-                <label for="password">Repeat Password</label>
+                <label for="password2">Repeat Password</label>
                 <div class="control">
-                  <input type="password" class="input">
+                  <input type="password" class="input" v-model="password2">
                 </div>
+              </div>
+
+              <div class="notification is-danger" v-if="errors.length">
+                <p
+                  v-for="error in errors"
+                  :key="error"
+                  class=""
+                >
+                  {{ error }}
+                </p>
               </div>
 
               <div class="field">
@@ -40,6 +72,7 @@
                 </div>
               </div>
             </form>
+
 
             <hr>
 
