@@ -2,14 +2,14 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useUserAuth = defineStore('userauth', () => {
-  const user = ref({toke: '', isAuthenticated: false})
-
+  const user = ref({token:'', isAuthenticated: false})
 
   const initializeUser = () => {
     if (localStorage.getItem('token')) {
       user.value.token = localStorage.getItem('token')
       user.value.isAuthenticated = true
     }else{
+      console.log('Set User')
       user.value.token = ''
       user.value.isAuthenticated = false
     }
@@ -26,8 +26,9 @@ export const useUserAuth = defineStore('userauth', () => {
     user.value.isAuthenticated = false
   }
 
+
   return { 
-    initializeUser,
     user,
+    initializeUser
   }
 })
