@@ -15,7 +15,7 @@ const { initializeUser } = useAuth
 
 initializeUser()
 
-const token = user
+const token = user.value.token
 
 if (token) {
   axios.defaults.headers.common['Authorization'] = `Token ${token}`

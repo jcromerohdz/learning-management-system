@@ -29,6 +29,8 @@ export const useUserAuth = defineStore('userauth', () => {
 
   return { 
     user,
-    initializeUser
+    initializeUser,
+    setToken,
+    removeToken,
   }
 })

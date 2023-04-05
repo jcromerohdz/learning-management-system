@@ -3,14 +3,12 @@
   import { useRoute, useRouter } from "vue-router"
   import axios from 'axios'
 
-
   const username = ref('')
   const password = ref('')
   const password2 = ref('')
   const errors = ref([])
 
   const router = useRouter();
-
 
   const submitForm = () => {
     errors.value = []
