@@ -1,4 +1,25 @@
-<script setup></script>
+<script setup>
+  import { ref } from 'vue';
+  import axios from 'axios'
+
+  const courses = ref([])
+
+  const getCourses = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/courses')
+      courses.value = response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  getCourses()
+ 
+
+
+
+
+</script>
 <template>
   <div class="courses">
 
@@ -26,7 +47,12 @@
 
           <div class="column is-10">
             <div class="columns is-multiline">
-              <div class="column is-4">
+
+              <div 
+                class="column is-4"
+                v-for="course in courses"
+                :key="course.id"
+                >
                 <div class="card">
                   <div class="card-image">
                     <figure class="image is-4by3">
@@ -37,133 +63,19 @@
                   <div class="card-content">
                     <div class="media">
                       <div class="media-content">
-                        <p class="is-sizes-5">Build a social network</p>
+                        <p class="is-sizes-5">{{ course.title }}</p>
                       </div>
                     </div>
 
                     <div class="content">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, ipsum?</p>
+                      <p>{{ course.short_description }}</p>
 
                       <a href="#">More Info...</a>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="column is-4">
-                <div class="card">
-                  <div class="card-image">
-                    <figure class="image is-4by3">
-                      <img src="https://placehold.co/1280x960" alt="Placeholder Image">
-                    </figure>
-                  </div>
-
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content">
-                        <p class="is-sizes-5">Build a social network</p>
-                      </div>
-                    </div>
-
-                    <div class="content">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, ipsum?</p>
-
-                      <a href="#">More Info...</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="column is-4">
-                <div class="card">
-                  <div class="card-image">
-                    <figure class="image is-4by3">
-                      <img src="https://placehold.co/1280x960" alt="Placeholder Image">
-                    </figure>
-                  </div>
-
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content">
-                        <p class="is-sizes-5">Build a social network</p>
-                      </div>
-                    </div>
-
-                    <div class="content">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, ipsum?</p>
-
-                      <a href="#">More Info...</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="column is-4">
-                <div class="card">
-                  <div class="card-image">
-                    <figure class="image is-4by3">
-                      <img src="https://placehold.co/1280x960" alt="Placeholder Image">
-                    </figure>
-                  </div>
-
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content">
-                        <p class="is-sizes-5">Build a social network</p>
-                      </div>
-                    </div>
-
-                    <div class="content">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, ipsum?</p>
-
-                      <a href="#">More Info...</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="column is-4">
-                <div class="card">
-                  <div class="card-image">
-                    <figure class="image is-4by3">
-                      <img src="https://placehold.co/1280x960" alt="Placeholder Image">
-                    </figure>
-                  </div>
-
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content">
-                        <p class="is-sizes-5">Build a social network</p>
-                      </div>
-                    </div>
-
-                    <div class="content">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, ipsum?</p>
-
-                      <a href="#">More Info...</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="column is-4">
-                <div class="card">
-                  <div class="card-image">
-                    <figure class="image is-4by3">
-                      <img src="https://placehold.co/1280x960" alt="Placeholder Image">
-                    </figure>
-                  </div>
-
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content">
-                        <p class="is-sizes-5">Build a social network</p>
-                      </div>
-                    </div>
-
-                    <div class="content">
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, ipsum?</p>
-
-                      <a href="#">More Info...</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+ 
             </div>
 
             <div class="column is-12">
