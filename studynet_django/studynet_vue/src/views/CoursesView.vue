@@ -16,10 +16,6 @@
 
   getCourses()
  
-
-
-
-
 </script>
 <template>
   <div class="courses">
