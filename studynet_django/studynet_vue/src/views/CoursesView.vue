@@ -1,4 +1,5 @@
 <script setup>
+  import { useRoute, useRouter } from "vue-router"
   import { ref } from 'vue';
   import axios from 'axios'
 
@@ -70,7 +71,7 @@
                     <div class="content">
                       <p>{{ course.short_description }}</p>
 
-                      <a href="#">More Info...</a>
+                      <router-link :to="{name: 'course', params: {slug: course.slug}}">More Info...</router-link>
                     </div>
                   </div>
                 </div>
