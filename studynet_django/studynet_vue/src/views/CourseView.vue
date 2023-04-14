@@ -1,10 +1,15 @@
 <script setup>
-   import { useRoute, useRouter } from 'vue-router'
-  import { ref } from 'vue';
   import axios from 'axios'
+  import { useRoute, useRouter } from 'vue-router'
+  import { ref } from 'vue';
+  import { storeToRefs } from 'pinia';
+  import { useUserAuth } from '@/stores/userAuth'
 
   const route = useRoute()
+  const userAuth = useUserAuth()
+  
   const course = ref([])
+  const { user } = storeToRefs(userAuth)
 
   const getCourse = async () => {
     try {
@@ -42,7 +47,13 @@
           </div>
 
           <div class="column is-10">
-            <p>{{ course.long_description }}</p>
+            <template v-if="user.isAuthenticated">
+              <p>{{ course.long_description }}</p>
+            </template>
+            <template v-else>
+              <h2>Restricted access</h2>
+              <p>You need to have an account to continue!</p>
+            </template>
           </div>
         </div>
       </div>
