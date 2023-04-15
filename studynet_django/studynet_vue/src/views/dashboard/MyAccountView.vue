@@ -7,7 +7,16 @@
   const { removeToken } = useAuth
   const router = useRouter();
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      const response = await axios.post('/api/v1/token/logout/')
+      if(response){
+        console.log('Logged out')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
     axios.defaults.headers.common['Authorization'] = ""
     localStorage.removeItem('token')
     removeToken()
