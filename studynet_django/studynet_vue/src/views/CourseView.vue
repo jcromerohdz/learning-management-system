@@ -8,13 +8,15 @@
   const route = useRoute()
   const userAuth = useUserAuth()
   
-  const course = ref([])
+  const course = ref({})
+  const lessons = ref([])
   const { user } = storeToRefs(userAuth)
 
   const getCourse = async () => {
     try {
       const response = await axios.get(`http://localhost:8000/api/v1/courses/${route.params.slug}`)
-      course.value = response.data
+      course.value = response.data.course
+      lessons.value = response.data.lessons
     } catch (error) {
       console.log(error)
     }
@@ -38,11 +40,12 @@
             <h2>Table of contents</h2>
 
             <ul>
-              <li><a href="#">Introduction</a></li>
-              <li><a href="#">Get started</a></li>
-              <li><a href="#">Part 1</a></li>
-              <li><a href="#">Part 2</a></li>
-              <li><a href="#">Summary</a></li>
+              <li 
+                v-for="lesson in lessons"
+                :key="lesson.id"
+              >
+                <a href="#">{{ lesson.title }}</a>
+              </li>
             </ul>
           </div>
 

@@ -21,7 +21,7 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
-class Lessons(models.Model):
+class Lesson(models.Model):
     DRAFT = 'draft'
     PUBLISHED = 'published'
 
