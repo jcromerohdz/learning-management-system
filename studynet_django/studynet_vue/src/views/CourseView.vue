@@ -10,6 +10,7 @@
   
   const course = ref({})
   const lessons = ref([])
+  const activeLesson = ref(null)
   const { user } = storeToRefs(userAuth)
 
   const getCourse = async () => {
@@ -37,21 +38,28 @@
       <div class="container">
         <div class="columns content">
           <div class="column is-2">
-            <h2>Table of contents</h2>
-
-            <ul>
-              <li 
-                v-for="lesson in lessons"
-                :key="lesson.id"
-              >
-                <a href="#">{{ lesson.title }}</a>
-              </li>
-            </ul>
+            <aside class="menu">
+              <p class="menu-label">Course Lessons</p>
+              <ul class="menu-list" >
+                <li 
+                  v-for="lesson in lessons"
+                  :key="lesson.id"
+                >
+                  <a @click="activeLesson = lesson">{{ lesson.title }}</a>
+                </li>
+              </ul>
+            </aside>
           </div>
 
           <div class="column is-10">
             <template v-if="user.isAuthenticated">
-              <p>{{ course.long_description }}</p>
+              <template v-if="activeLesson">
+                <h2>{{ activeLesson.title }}</h2>
+                {{ activeLesson.long_description }}
+              </template>
+              <template v-else>
+                <p>{{ course.long_description }}</p>
+              </template>
             </template>
             <template v-else>
               <h2>Restricted access</h2>
