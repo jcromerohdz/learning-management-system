@@ -15,15 +15,16 @@
     name:'',
     content:''
   }
+  const comments = ref([])
   const { user } = storeToRefs(userAuth)
 
-  const submitComment = () => {
+  const submitComment = async () => {
     console.log('submitComment')
     try {
       if(course && activeLesson){
         const courseSlug = course.value.slug
         const activeLessonSlug = activeLesson.value.slug
-        const response = axios.post(`http://localhost:8000/api/v1/courses/${courseSlug}/${activeLessonSlug}/`, comment)
+        const response = await axios.post(`http://localhost:8000/api/v1/courses/${courseSlug}/${activeLessonSlug}/`, comment)
         if(response){
           comment.name = ''
           comment.content = ''
@@ -33,6 +34,29 @@
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const getComments = async () => {
+    try {
+      if(course && activeLesson){
+        const courseSlug = course.value.slug
+        const activeLessonSlug = activeLesson.value.slug
+        const response = await axios.get(`http://localhost:8000/api/v1/courses/${courseSlug}/${activeLessonSlug}/get-comments/`)
+        if(response){
+          console.log(response.data)
+          comments.value = response.data
+        }
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  const setActiveLesson = (lesson) => {
+    activeLesson.value = lesson
+    getComments()
   }
 
   const getCourse = async () => {
@@ -67,7 +91,7 @@
                   v-for="lesson in lessons"
                   :key="lesson.id"
                 >
-                  <a @click="activeLesson = lesson">{{ lesson.title }}</a>
+                  <a @click="setActiveLesson(lesson)">{{ lesson.title }}</a>
                 </li>
               </ul>
             </aside>
@@ -80,6 +104,24 @@
                 {{ activeLesson.long_description }}
 
                 <hr>
+                <h3>comments</h3>
+
+                <article 
+                  v-for="comment in comments"
+                  :key="comment.id"
+                  class="media box"
+                >
+                  <div class="media-content">
+                    <div class="content">
+                      <p>
+                        <strong>{{ comment.name }}</strong> {{ comment.created_at }}<br>
+                        {{ comment.content }}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+
+
                 <form v-on:submit.prevent="submitComment()">
                   <div class="field">
                     <label for="" class="label">Name</label>
