@@ -11,7 +11,29 @@
   const course = ref({})
   const lessons = ref([])
   const activeLesson = ref(null)
+  const comment = {
+    name:'',
+    content:''
+  }
   const { user } = storeToRefs(userAuth)
+
+  const submitComment = () => {
+    console.log('submitComment')
+    try {
+      if(course && activeLesson){
+        const courseSlug = course.value.slug
+        const activeLessonSlug = activeLesson.value.slug
+        const response = axios.post(`http://localhost:8000/api/v1/courses/${courseSlug}/${activeLessonSlug}/`, comment)
+        if(response){
+          comment.name = ''
+          comment.content = ''
+          alert('The comment was added!')
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getCourse = async () => {
     try {
@@ -56,6 +78,30 @@
               <template v-if="activeLesson">
                 <h2>{{ activeLesson.title }}</h2>
                 {{ activeLesson.long_description }}
+
+                <hr>
+                <form v-on:submit.prevent="submitComment()">
+                  <div class="field">
+                    <label for="" class="label">Name</label>
+                    <div class="control">
+                      <input type="text" class="input" v-model="comment.name">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label for="" class="label">Content</label>
+                    <div class="control">
+                      <textarea class="textarea" v-model="comment.content">
+                      </textarea>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="control">
+                      <button class="button is-link">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </template>
               <template v-else>
                 <p>{{ course.long_description }}</p>
