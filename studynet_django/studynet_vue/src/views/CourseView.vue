@@ -16,23 +16,37 @@
     content:''
   }
   const comments = ref([])
+  const errors = ref([])
   const { user } = storeToRefs(userAuth)
 
   const submitComment = async () => {
-    console.log('submitComment')
-    try {
-      if(course && activeLesson){
-        const courseSlug = course.value.slug
-        const activeLessonSlug = activeLesson.value.slug
-        const response = await axios.post(`http://localhost:8000/api/v1/courses/${courseSlug}/${activeLessonSlug}/`, comment)
-        if(response){
-          comment.name = ''
-          comment.content = ''
-          alert('The comment was added!')
+    console.log('submitComment02')
+
+    errors.value = []
+
+    if(comment.name == ''){
+      errors.value.push('The name must be filled out')
+    }
+    if(comment.content == ''){
+      errors.value.push('The content must be filled out')
+    }
+
+
+    if(!errors.value.length){
+      try {
+        if(course && activeLesson){
+          const courseSlug = course.value.slug
+          const activeLessonSlug = activeLesson.value.slug
+          const response = await axios.post(`http://localhost:8000/api/v1/courses/${courseSlug}/${activeLessonSlug}/`, comment)
+          if(response){
+            comment.name = ''
+            comment.content = ''
+            alert('The comment was added!')
+          }
         }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
     }
   }
 
@@ -136,6 +150,16 @@
                       </textarea>
                     </div>
                   </div>
+
+                  <div 
+                    class="notification is-danger"
+                    v-for="error in errors"
+                    :key="error"
+                  >
+                    {{ error }}
+                  </div>
+
+
                   <div class="field">
                     <div class="control">
                       <button class="button is-link">
