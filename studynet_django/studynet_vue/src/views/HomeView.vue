@@ -1,4 +1,21 @@
 <script setup>
+  import axios from 'axios'
+  import { ref } from 'vue';
+  import CourseItem from '@/components/CourseItem.vue'
+  
+  const courses = ref([])
+
+  const getFrontPageCourses = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/courses/get_frontpage_courses/')
+      courses.value = response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  getFrontPageCourses()
+
 </script>
 
 <template>
@@ -49,6 +66,21 @@
           <div class="column is-12 has-text-centered">
             <a href="#" class="button is-info is-size-3 mt-6 mb-6">Click to get started</a>
           </div>
+
+          <hr>
+
+          <div 
+            class="column is-4"
+            v-for="course in courses"
+            :key="course.id"
+            >
+            
+            <CourseItem 
+              :course="course"
+            />
+
+          </div>
+
         </div>
       </div>
     </section>
