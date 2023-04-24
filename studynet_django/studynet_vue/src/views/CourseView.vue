@@ -41,7 +41,8 @@
           if(response){
             comment.name = ''
             comment.content = ''
-            alert('The comment was added!')
+
+            comments.value.push(response.data)
           }
         }
       } catch (error) {
