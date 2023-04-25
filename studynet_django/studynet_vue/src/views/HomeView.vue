@@ -70,7 +70,7 @@
           <hr>
 
           <div 
-            class="column is-4"
+            class="column is-3"
             v-for="course in courses"
             :key="course.id"
             >

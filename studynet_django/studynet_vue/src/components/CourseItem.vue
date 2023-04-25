@@ -6,7 +6,7 @@
   <div class="card">
     <div class="card-image">
       <figure class="image is-4by3">
-        <img src="https://placehold.co/1280x960" alt="Placeholder Image">
+        <img :src="course.get_image" alt="Placeholder Image">
       </figure>
     </div>
 
