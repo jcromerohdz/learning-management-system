@@ -7,7 +7,7 @@
 
   const courses = ref([])
   const categories = ref([])
-  const activeCategory = ref({})
+  const activeCategory = ref(null)
   
   const getCategories = async () => {
     try {
@@ -21,8 +21,14 @@
   getCategories()
 
   const getCourses = async () => {
+    let url = 'http://localhost:8000/api/v1/courses/'
+
+    if (activeCategory.value){
+      url += '?category_id=' + activeCategory.value.id
+    }
+
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/courses/')
+      const response = await axios.get(url)
       courses.value = response.data
     } catch (error) {
       console.log(error)
@@ -32,8 +38,9 @@
   getCourses()
 
   const setActiveCategory = (category) => {
-    console.log(category)
     activeCategory.value = category
+    
+    getCourses()
   }
  
 </script>
@@ -57,7 +64,7 @@
                 <li>
                   <a 
                     :class="{'is-active has-background-dark': !activeCategory}"
-                    @click="setActiveCategory({})"
+                    @click="setActiveCategory(null)"
                   >
                     All courses
                   </a>
@@ -65,7 +72,6 @@
                 <li
                   v-for="category in categories"
                   :key="category.id"
-                  :class="{'is-active has-background-dark has-text-white': activeCategory.id == category.id}"
                   @click="setActiveCategory(category)"
                 >
                   <a>{{ category.title }}</a>
