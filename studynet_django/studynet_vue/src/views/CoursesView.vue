@@ -6,10 +6,23 @@
   import CourseItem from '@/components/CourseItem.vue'
 
   const courses = ref([])
+  const categories = ref([])
+  const activeCategory = ref({})
+  
+  const getCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/v1/courses/get_categories/')
+      categories.value = response.data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  getCategories()
 
   const getCourses = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/courses')
+      const response = await axios.get('http://localhost:8000/api/v1/courses/')
       courses.value = response.data
     } catch (error) {
       console.log(error)
@@ -17,6 +30,11 @@
   }
 
   getCourses()
+
+  const setActiveCategory = (category) => {
+    console.log(category)
+    activeCategory.value = category
+  }
  
 </script>
 <template>
@@ -36,10 +54,22 @@
               <p class="menu-label">Categories</p>
 
               <ul class="menu-list">
-                <li><a href="#" class="is-active has-background-dark">All courses</a></li>
-                <li><a href="#">Programming</a></li>
-                <li><a href="#">Design</a></li>
-                <li><a href="#">UX</a></li>
+                <li>
+                  <a 
+                    :class="{'is-active has-background-dark': !activeCategory}"
+                    @click="setActiveCategory({})"
+                  >
+                    All courses
+                  </a>
+                </li>
+                <li
+                  v-for="category in categories"
+                  :key="category.id"
+                  :class="{'is-active has-background-dark has-text-white': activeCategory.id == category.id}"
+                  @click="setActiveCategory(category)"
+                >
+                  <a>{{ category.title }}</a>
+                </li>
               </ul>
             </aside>
           </div>
@@ -84,3 +114,9 @@
     </section>
   </div>
 </template>
+
+<style>
+.menu-list a {
+    color: #b8babb;
+}
+</style>
