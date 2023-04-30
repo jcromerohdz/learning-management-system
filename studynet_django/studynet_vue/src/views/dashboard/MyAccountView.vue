@@ -7,6 +7,8 @@
   const { removeToken } = useAuth
   const router = useRouter();
 
+    document.title = 'My Account | StudyNet'
+
   const logout = async () => {
     try {
       const response = await axios.post('/api/v1/token/logout/')
@@ -29,7 +31,7 @@
 
     <div class="hero is-info">
       <div class="hero-body has-text-centered">
-        <h1 class="title">Ny Account</h1>
+        <h1 class="title">My Account</h1>
       </div>
     </div>
 
