@@ -8,6 +8,9 @@
   const password2 = ref('')
   const errors = ref([])
 
+
+  document.title = 'Sign up | StudyNet'
+
   const router = useRouter();
 
   const submitForm = () => {

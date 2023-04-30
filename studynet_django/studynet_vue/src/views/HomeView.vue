@@ -4,6 +4,7 @@
   import CourseItem from '@/components/CourseItem.vue'
   
   const courses = ref([])
+  document.title = 'Welcome | StudyNet'
 
   const getFrontPageCourses = async () => {
     try {

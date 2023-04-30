@@ -10,6 +10,8 @@
   const password = ref('')
   const errors = ref([])
 
+  document.title = 'Log in | StudyNet'
+
   const router = useRouter();
   const useAuth = useUserAuth()
 

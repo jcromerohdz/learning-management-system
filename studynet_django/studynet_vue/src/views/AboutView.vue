@@ -1,3 +1,8 @@
+<script setup>
+  document.title = 'About | StudyNet'
+</script>
+
+
 <template>
   <div class="about">
 

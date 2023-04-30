@@ -8,6 +8,8 @@
   const courses = ref([])
   const categories = ref([])
   const activeCategory = ref(null)
+
+  document.title = 'Courses | StudyNet'
   
   const getCategories = async () => {
     try {

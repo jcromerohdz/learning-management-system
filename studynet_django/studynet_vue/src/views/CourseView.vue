@@ -79,6 +79,7 @@
       const response = await axios.get(`http://localhost:8000/api/v1/courses/${route.params.slug}`)
       course.value = response.data.course
       lessons.value = response.data.lessons
+      document.title = `${course.value.title} | StudyNet`
     } catch (error) {
       console.log(error)
     }
