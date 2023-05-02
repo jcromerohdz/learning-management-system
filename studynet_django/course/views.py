@@ -9,7 +9,7 @@ from .serializers  import CourseListSerializer, CourseDetailSerializer, LessonLi
 @api_view(['GET'])
 def get_quiz(request, course_slug, lesson_slug):
     lesson = Lesson.objects.get(slug=lesson_slug)
-    quiz = lesson.quizzes.filter(slug=lesson_slug)
+    quiz = lesson.quizzes.first()
     serializer = QuizSerializer(quiz)
     return Response(serializer.data)
 
@@ -43,14 +43,17 @@ def get_frontpage_courses(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-@authentication_classes([])
 @permission_classes([])
 def get_course(request, slug):
     course = Course.objects.get(slug=slug)
     course_serializer = CourseDetailSerializer(course)
     lesson_serializer = LessonListSerializer(course.lessons.all(), many=True)
+    print("COURSE SERIALIZER")
+    print(course_serializer.data)
+    print(request.user.is_authenticated)
 
     if request.user.is_authenticated:
+        print('user login')
         course_data = course_serializer.data
     else:
         course_data = {}
