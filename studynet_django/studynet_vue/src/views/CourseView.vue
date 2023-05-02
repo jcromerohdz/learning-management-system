@@ -2,19 +2,23 @@
   import axios from 'axios'
   import { useRoute, useRouter } from 'vue-router'
   import { ref } from 'vue';
-  import { storeToRefs } from 'pinia';
+  import { storeToRefs } from 'pinia'
   import { useUserAuth } from '@/stores/userAuth'
 
+  import CourseComment from "../components/CourseComment.vue"
+  import AddComment from "../components/AddComment.vue"
+  import Quiz from "../components/Quiz.vue"
+  
   const route = useRoute()
   const userAuth = useUserAuth()
   
   const course = ref({})
   const lessons = ref([])
   const activeLesson = ref(null)
-  const comment = {
-    name:'',
-    content:''
-  }
+  // const comment = {
+  //   name:'',
+  //   content:''
+  // }
   const comments = ref([])
   const errors = ref([])
   const quiz = ref({})
@@ -43,36 +47,9 @@
     }
   }
 
-  const submitComment = async () => {
-    console.log('submitComment02')
-
-    errors.value = []
-
-    if(comment.name == ''){
-      errors.value.push('The name must be filled out')
-    }
-    if(comment.content == ''){
-      errors.value.push('The content must be filled out')
-    }
-
-
-    if(!errors.value.length){
-      try {
-        if(course && activeLesson){
-          const courseSlug = course.value.slug
-          const activeLessonSlug = activeLesson.value.slug
-          const response = await axios.post(`http://localhost:8000/api/v1/courses/${courseSlug}/${activeLessonSlug}/`, comment)
-          if(response){
-            comment.name = ''
-            comment.content = ''
-
-            comments.value.push(response.data)
-          }
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
+  const submitComment = (comment) => {
+    console.log('submit Comment on CourseView.vue')
+    comments.value.push(comment)
   }
 
   const getComments = async () => {
@@ -170,83 +147,24 @@
                 <hr>
 
                 <template v-if="activeLesson.lesson_type == 'quiz'">
-                  <h3>{{ quiz.question }}</h3>
-                  <div class="control">
-                    <label class="radio">
-                      <input type="radio" :value="quiz.op1" v-model="selectedAnswer"> {{ quiz.op1 }}
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="radio">
-                      <input type="radio" :value="quiz.op2" v-model="selectedAnswer"> {{ quiz.op2 }}
-                    </label>
-                  </div>
-                  <div class="control">
-                    <label class="radio">
-                      <input type="radio" :value="quiz.op3" v-model="selectedAnswer"> {{ quiz.op3 }}
-                    </label>
-                  </div>
-                  <div class="control mt-4">
-                    <button class="button is-info" @click="submitQuiz">Submit</button>
-                  </div>
-
-                  <template v-if="quizResult == 'correct'">
-                    <div class="notification is-success mt-4">Correct 😃</div>
-                  </template>
-
-                  <template v-if="quizResult == 'incorrect'">
-                    <div class="notification is-danger mt-4">Wrong 🙃 please try again!</div>
-                  </template>
+                  <Quiz 
+                    :quiz="quiz"
+                  />
                 </template>
 
                 <template v-if="activeLesson.lesson_type=='article'">
-                  <h3>comments</h3>
-                  <article 
+                  <h3>Comments</h3>
+                  <CourseComment
                     v-for="comment in comments"
                     :key="comment.id"
-                    class="media box"
-                  >
-                    <div class="media-content">
-                      <div class="content">
-                        <p>
-                          <strong>{{ comment.name }}</strong> {{ comment.created_at }}<br>
-                          {{ comment.content }}
-                        </p>
-                      </div>
-                    </div>
-                  </article>
+                    :comment="comment"
+                  />
 
-                  <form v-on:submit.prevent="submitComment()">
-                    <div class="field">
-                      <label for="" class="label">Name</label>
-                      <div class="control">
-                        <input type="text" class="input" v-model="comment.name">
-                      </div>
-                    </div>
-                    <div class="field">
-                      <label for="" class="label">Content</label>
-                      <div class="control">
-                        <textarea class="textarea" v-model="comment.content">
-                        </textarea>
-                      </div>
-                    </div>
-
-                    <div 
-                      class="notification is-danger"
-                      v-for="error in errors"
-                      :key="error"
-                    >
-                      {{ error }}
-                    </div>
-
-                    <div class="field">
-                      <div class="control">
-                        <button class="button is-link">
-                          Submit
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                  <AddComment 
+                    :course="course"
+                    :activeLesson="activeLesson"
+                    @submitComment="submitComment"
+                  />
                 </template>
               </template>
               <template v-else>
