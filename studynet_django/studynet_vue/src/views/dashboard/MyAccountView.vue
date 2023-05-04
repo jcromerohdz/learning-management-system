@@ -25,6 +25,19 @@
     router.push('/')
   }
 
+  const getActivities = async() => {
+    try {
+      const response = await axios.get('/api/v1/activities/get_active_courses')
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  getActivities()
+
+  
+
 </script>
 <template>
   <div class="about">

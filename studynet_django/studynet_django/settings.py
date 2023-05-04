@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'djoser',
 
     'course.apps.CourseConfig',
+    'activity.apps.ActivityConfig',
 ]
 
 CORS_ALLOWED_ORIGINS = [
