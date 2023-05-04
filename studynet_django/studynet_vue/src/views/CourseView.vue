@@ -8,6 +8,7 @@
   import CourseComment from "../components/CourseComment.vue"
   import AddComment from "../components/AddComment.vue"
   import Quiz from "../components/Quiz.vue"
+  import Video from "../components/Video.vue"
   
   const route = useRoute()
   const userAuth = useUserAuth()
@@ -15,10 +16,6 @@
   const course = ref({})
   const lessons = ref([])
   const activeLesson = ref(null)
-  // const comment = {
-  //   name:'',
-  //   content:''
-  // }
   const comments = ref([])
   const errors = ref([])
   const quiz = ref({})
@@ -149,6 +146,12 @@
                 <template v-if="activeLesson.lesson_type == 'quiz'">
                   <Quiz 
                     :quiz="quiz"
+                  />
+                </template>
+
+                <template v-if="activeLesson.lesson_type == 'video'">
+                  <Video 
+                    :youtube_id="activeLesson.youtube_id"
                   />
                 </template>
 
