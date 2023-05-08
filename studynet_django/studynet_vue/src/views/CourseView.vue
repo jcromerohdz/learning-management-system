@@ -151,6 +151,12 @@
     <div class="hero is-info">
       <div class="hero-body has-text-centered">
         <h1 class="title">{{ course.title }}</h1>
+
+        <p class="subtitle" v-if="course.created_by">
+          By {{ `${course.created_by.first_name} ${course.created_by.last_name}` }}
+        </p>
+       
+
       </div>
     </div>
 
