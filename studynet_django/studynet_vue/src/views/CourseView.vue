@@ -21,6 +21,7 @@
   const quiz = ref({})
   const selectedAnswer = ref('')
   const quizResult = ref(null)
+  const activity = ref({})
   const { user } = storeToRefs(userAuth)
 
   const submitQuiz = () => {
@@ -92,6 +93,7 @@
         const response = await axios.post(`http://localhost:8000/api/v1/activities/track_started/${courseSlug}/${activeLessonSlug}/`)
         if(response){
           console.log(response.data)
+          activity.value = response.data
         }
       }
     } catch (error) {
@@ -99,6 +101,22 @@
     }
   }
 
+  const markAsDone = async() => {
+    try {
+      if(course && activeLesson){
+        console.log('markAsDone', course.value.slug)
+        const courseSlug = course.value.slug
+        const activeLessonSlug = activeLesson.value.slug
+        const response = await axios.post(`http://localhost:8000/api/v1/activities/mark_as_done/${courseSlug}/${activeLessonSlug}/`)
+        if(response){
+          console.log(response.data)
+          activity.value = response.data
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const setActiveLesson = (lesson) => {
     activeLesson.value = lesson
@@ -157,6 +175,18 @@
             <template v-if="user.isAuthenticated">
               <template v-if="activeLesson">
                 <h2>{{ activeLesson.title }}</h2>
+
+                <span 
+                  class="tag is-warning" 
+                  v-if="activity.status == 'started'"
+                  @click="markAsDone"
+                >
+                  Started (mark as done)
+                </span>
+                <span class="tag is-success" v-else>Done</span>
+
+                <hr>
+
                 {{ activeLesson.long_description }}
 
                 <hr>
