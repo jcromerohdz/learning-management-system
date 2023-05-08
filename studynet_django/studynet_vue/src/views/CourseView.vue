@@ -83,6 +83,22 @@
     }
   }
 
+  const trackStarted = async() => {
+    try {
+      if(course && activeLesson){
+        console.log('trackStarted', course.value.slug)
+        const courseSlug = course.value.slug
+        const activeLessonSlug = activeLesson.value.slug
+        const response = await axios.post(`http://localhost:8000/api/v1/activities/track_started/${courseSlug}/${activeLessonSlug}/`)
+        if(response){
+          console.log(response.data)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   const setActiveLesson = (lesson) => {
     activeLesson.value = lesson
@@ -93,6 +109,8 @@
     }else {
       getComments()
     }
+
+    trackStarted()
   }
 
   const getCourse = async () => {
