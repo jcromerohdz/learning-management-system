@@ -152,9 +152,11 @@
       <div class="hero-body has-text-centered">
         <h1 class="title">{{ course.title }}</h1>
 
-        <p class="subtitle" v-if="course.created_by">
-          By {{ `${course.created_by.first_name} ${course.created_by.last_name}` }}
-        </p>
+        <div  class="subtitle" v-if="course.created_by">
+          <router-link :to="`/authors/${course.created_by.id}`">
+            By {{ `${course.created_by.first_name} ${course.created_by.last_name}` }}
+          </router-link>
+        </div>
        
 
       </div>
