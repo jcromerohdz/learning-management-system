@@ -30,6 +30,7 @@
           <div class="buttons">
             
             <template v-if="user.isAuthenticated">
+              <RouterLink to="/dashboard/create-course" class="button is-primary">Create Course</RouterLink>
               <RouterLink to="/dashboard/my-account" class="button is-info">My Account</RouterLink>
             </template>
             <template v-else>

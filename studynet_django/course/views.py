@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -86,6 +87,27 @@ def add_comment(request, course_slug, lesson_slug):
     serializer = CommentSerializer(comment)
 
     return Response(serializer.data)
+
+@api_view(['POST'])
+def create_course(request):
+    data = request.data.get('_rawValue')
+
+    course = Course.objects.create(
+        title = data['title'],
+        slug = slugify(data['title']),
+        short_description = data['short_description'],
+        long_description = data['long_description'],
+        created_by = request.user
+    )
+
+    for id in data['categories']:
+        course.categories.add(id)
+
+    course.save()
+
+    print(course)
+
+    return Response({'Yo': 'yo'})
 
 
 @api_view(['GET'])

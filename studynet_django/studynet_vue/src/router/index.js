@@ -33,6 +33,11 @@ const router = createRouter({
       component: () => import('../views/dashboard/MyAccountView.vue')
     },
     {
+      path: '/dashboard/create-course',
+      name: 'createcourse',
+      component: () => import('../views/dashboard/CreateCourseView.vue')
+    },
+    {
       path: '/courses',
       name: 'courses',
       component: () => import('../views/CoursesView.vue')
